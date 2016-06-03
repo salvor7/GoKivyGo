@@ -52,9 +52,12 @@ class ButtonGrid(GridLayout):
 
     def add_cell(self, index):
         def make_move(instance):
-            print('The move intersection is {1}'.format(instance, instance.intersection_id))
-            self.state.move(move_pt=instance.intersection_id)
-            print(self.state.board)
+            try:
+                self.state.move(move_pt=instance.intersection_id)
+            except go.MoveError as e:
+                App.get_running_app().root.ids._info_button.text = str(e)
+            else:
+                App.get_running_app().root.ids._info_button.text = ''
             self.gamestate = self.state.board._board_colour
 
         def _update_loc(inst, value):

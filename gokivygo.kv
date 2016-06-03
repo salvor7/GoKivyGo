@@ -1,7 +1,7 @@
 #:include debug.kv
 #:import Logger kivy.logger.Logger
 
-  
+
 <Button>
     background_color: 0, 0, 0, 0
 
@@ -13,6 +13,7 @@
 
     Board:
 
+
     BoxLayout:
         size_hint: 0.7, 1
         orientation: 'vertical'
@@ -23,7 +24,8 @@
         Button:
             text: 'Context'
         Button:
-            text: 'Info01'
+            id: _info_button
+            text: ''
 
 
 <BoardImage>:
@@ -53,7 +55,7 @@
     source: self.sourcewhite
     pos: self.parent.pos
     size: self.parent.size
-    color: 0,0,0,0
+    color: 0, 0, 0, 0
 
 
 <Intersection>
