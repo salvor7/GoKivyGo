@@ -8,6 +8,8 @@ from kivy.logger import Logger
 from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
+import go
+
 class GoKivyGo(BoxLayout):
     pass
 
@@ -15,11 +17,12 @@ class Board(FloatLayout):
     background = ObjectProperty(None)
     
     def __init__(self, **kw):
-        super(Board, self).__init__(**kw)
+        super().__init__(**kw)
         try:
             self.method1()
         except AttributeError:
             Clock.schedule_once(self.method1)
+        self.state = go.Position()
             
     def method1(self, inst=None, value=None):
         Logger.info(str(self.background.texture))
@@ -33,14 +36,23 @@ class ButtonGrid(GridLayout):
             self.add_cell(i)
             
     def add_cell(self, index):
+        def callback(instance):
+            print('My button {0} is intersection {1}'.format(instance, instance.intersection_id))
+
         def _update_loc(inst, value):
             '''Move a child to a new new size/pos. Used by add_cell'''
             inst.cover.size = inst.size
             inst.cover.pos = inst.pos
 
-        b = Button(text=str(index))
-        ##self.bind(pos=_update_loc, size=_update_loc)
-        self.add_widget(b)
+        intersection = Intersection(intersection_id=index)
+        intersection.bind(on_press=callback)
+        self.add_widget(intersection)
+
+
+class Intersection(Button):
+    def __init__(self, intersection_id, **kwargs):
+        super().__init__(**kwargs)
+        self.intersection_id = intersection_id
 
         
 class BoardImage(Image):
