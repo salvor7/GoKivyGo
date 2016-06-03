@@ -24,8 +24,8 @@ class Board(FloatLayout):
             Clock.schedule_once(self.method1)
 
     def method1(self, inst=None, value=None):
-        Logger.info(str(self.background.texture))
-
+       # Logger.info(str(self.background.texture))
+        pass
         
 class ButtonGrid(GridLayout):
     gamestate = ListProperty([])
@@ -42,11 +42,13 @@ class ButtonGrid(GridLayout):
         for inter in self.intersectionlist:
             inter_colour = self.gamestate[inter.intersection_id]
             if inter_colour == go.BLACK:
-                inter.text = 'B'
+                inter.stone_image.color = (1, 1, 1, 1)
+                inter.stone_image.source = inter.stone_image.sourceblack
             elif inter_colour == go.WHITE:
-                inter.text = 'W'
+                inter.stone_image.color = (1, 1, 1, 1)
+                inter.stone_image.source = inter.stone_image.sourcewhite
             elif inter_colour == go.OPEN:
-                inter.text = ''
+                inter.stone_image.color = (0, 0, 0, 0)
 
     def add_cell(self, index):
         def make_move(instance):
@@ -70,17 +72,25 @@ class ButtonGrid(GridLayout):
 
 
 class Intersection(Button):
+    stone_image = ObjectProperty(None)
+
     def __init__(self, intersection_id, **kwargs):
         super().__init__(**kwargs)
         self.intersection_id = intersection_id
+
+
+class StoneImage(Image):
+    pass
 
         
 class BoardImage(Image):
     pass
 
+
 class GoKivyGoApp(App):
     def build(self):
         return GoKivyGo()
+
 
 if __name__ == '__main__':
     GoKivyGoApp().run()
